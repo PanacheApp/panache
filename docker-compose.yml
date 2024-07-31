@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: panache_postgres
+    environment:
+      POSTGRES_USER: panache
+      POSTGRES_PASSWORD: panache
+      POSTGRES_DB: panache
+    volumes:
+      - panache_postgres_data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+
+volumes:
+  panache_postgres_data:
