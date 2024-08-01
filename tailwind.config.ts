@@ -3,7 +3,7 @@ import tailwindcssAnimate from 'tailwindcss-animate'
 
 export default {
   darkMode: 'class',
-  content: ['./resources/**/*.edge', './inertia/**/*.{js,ts,jsx,tsx,vue}'],
+  content: ['./resources/**/*.edge', './app/**/*.{js,ts,jsx,tsx,vue}'],
   theme: {
     container: {
       center: true,

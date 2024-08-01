@@ -12,14 +12,22 @@ const inertiaConfig = defineConfig({
    */
   sharedData: {
     errors: (ctx) => ctx.session?.flashMessages.get('errors'),
+    user: (ctx) => ctx.auth.user,
+    path: (ctx) => ctx.request.url(true),
+    translations: (ctx) => ctx.i18n.localeTranslations,
   },
+
+  /**
+   * Path to the client-side entrypoint
+   */
+  entrypoint: 'app/common/ui/app/app.tsx',
 
   /**
    * Options for the server-side rendering
    */
   ssr: {
     enabled: true,
-    entrypoint: 'inertia/app/ssr.tsx',
+    entrypoint: 'app/common/ui/app/ssr.tsx',
   },
 })
 
