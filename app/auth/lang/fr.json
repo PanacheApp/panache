@@ -3,6 +3,8 @@
   "sign_up_description": "Pour créer un compte, remplissez les champs ci-dessous.",
   "sign_in_title": "Se connecter",
   "sign_in_description": "Entrez votre email ci-dessous pour vous connecter à votre compte.",
+  "forgot_password_title": "Mot de passe oublié ?",
+  "forgot_password_description": "Vous recevrez un <strong>email avec des instructions</strong>, si votre compte a une <em>adresse e-mail de secours</em>.",
   "gender": "Genre",
   "mr": "M.",
   "mrs": "Mme",
@@ -21,5 +23,6 @@
   "sign_in": "Se connecter",
   "already_have_account": "Vous avez déjà un compte ?",
   "dont_have_account": "Vous n'avez pas de compte ?",
-  "forgot_password": "Mot de passe oublié ?"
+  "forgot_password": "Mot de passe oublié ?",
+  "send_reset_link": "Envoyer le lien de réinitialisation"
 }

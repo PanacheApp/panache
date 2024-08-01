@@ -3,6 +3,8 @@
   "sign_up_description": "To create an account, fill the fields below.",
   "sign_in_title": "Sign In",
   "sign_in_description": "Enter your email below to sign in to your account.",
+  "forgot_password_title": "Forgot Your Password?",
+  "forgot_password_description": "You will receive an <strong>email with instructions</strong>, if your account has a <em>backup email</em>.",
   "gender": "Gender",
   "mr": "Mr.",
   "mrs": "Mrs.",
@@ -21,5 +23,6 @@
   "sign_in": "Sign In",
   "already_have_account": "Already have an account?",
   "dont_have_account": "Don't have an account?",
-  "forgot_password": "Forgot your password?"
+  "forgot_password": "Forgot your password?",
+  "send_reset_link": "Send Reset Link"
 }
