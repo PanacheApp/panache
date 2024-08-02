@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { Head } from '@inertiajs/react'
-import illustration from '../assets/illustration.webp'
+import { Head, Link } from '@inertiajs/react'
+import illustration from '../../../common/ui/assets/illustration.webp'
 import logo from '../../../common/ui/assets/logo.png'
 
 interface AuthLayoutProps extends React.PropsWithChildren {
@@ -17,7 +17,11 @@ const AuthLayout: React.FunctionComponent<AuthLayoutProps> = ({ children, title,
         <div className="flex items-center justify-center py-12">
           <div className="mx-auto grid w-[350px] gap-6">
             <div className="grid gap-2 text-center">
-              <img src={logo} alt="Logo" width="96" height="96" className="mx-auto" />
+              <div className="w-24 mx-auto">
+                <Link className="hover:opacity-75 transition" href="/">
+                  <img src={logo} alt="Logo" width="96" height="96" />
+                </Link>
+              </div>
               <h1 className="text-3xl font-bold">{title}</h1>
               <p className="text-balance text-sm text-muted-foreground">{description}</p>
             </div>

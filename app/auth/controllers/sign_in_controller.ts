@@ -7,7 +7,7 @@ export default class SignInController {
     return inertia.render('auth/sign_in')
   }
 
-  async handle({ auth, request, response, session }: HttpContext) {
+  async handle({ auth, request, response, session, i18n }: HttpContext) {
     const { localPart, password } = await request.validateUsing(signInValidator)
     const nextPath = request.input('next')
     try {
@@ -18,9 +18,9 @@ export default class SignInController {
         return response.redirect().toPath(nextPath)
       }
 
-      return response.redirect().toPath('/mails/inbox')
+      return response.redirect().toPath('/emails/inbox')
     } catch {
-      session.flash('errors.auth', 'Invalid credentials')
+      session.flash('errors.auth', i18n.t('auth.invalid_credentials'))
       let redirectPath = `/auth/sign_in`
       if (nextPath) {
         redirectPath += `?next=${nextPath}`

@@ -50,8 +50,11 @@ export default defineConfig({
   |
   */
   preloads: [
+    () => import('#common/routes'),
     () => import('#marketing/routes'),
     () => import('#auth/routes'),
+    () => import('#drive/routes'),
+    () => import('#emails/routes'),
     () => import('#start/kernel'),
   ],
 

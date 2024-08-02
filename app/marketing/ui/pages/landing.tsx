@@ -1,3 +1,13 @@
+import React from 'react'
+import MarketingLayout from '../components/marketing_layout'
+import IntroHero from '../components/intro_hero'
+import TryHero from '../components/try_hero'
+
 export default function Landing() {
-  return <h1 className="text-3xl font-bold underline">Hello world!</h1>
+  return (
+    <MarketingLayout>
+      <IntroHero />
+      <TryHero />
+    </MarketingLayout>
+  )
 }

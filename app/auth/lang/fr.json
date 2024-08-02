@@ -24,5 +24,6 @@
   "already_have_account": "Vous avez déjà un compte ?",
   "dont_have_account": "Vous n'avez pas de compte ?",
   "forgot_password": "Mot de passe oublié ?",
-  "send_reset_link": "Envoyer le lien de réinitialisation"
+  "send_reset_link": "Envoyer le lien de réinitialisation",
+  "invalid_credentials": "Identifiants invalides."
 }
