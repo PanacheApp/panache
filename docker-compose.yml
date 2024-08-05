@@ -13,5 +13,19 @@ services:
     ports:
       - '5432:5432'
 
+  minio:
+    image: minio/minio
+    container_name: panache_minio
+    environment:
+      MINIO_ROOT_USER: panache
+      MINIO_ROOT_PASSWORD: panachepanache
+    command: server /data --console-address ":9001"
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    volumes:
+      - panache_minio_data:/data
+
 volumes:
   panache_postgres_data:
+  panache_minio_data:

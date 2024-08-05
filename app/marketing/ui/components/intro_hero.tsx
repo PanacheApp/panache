@@ -1,9 +1,17 @@
 import * as React from 'react'
-import extendedIllustration from '../assets/extended_illustration.png'
+import extendedIllustration from '../assets/extended_illustration.webp'
 import { Button } from '#common/ui/components/button'
 import { GithubIcon } from 'lucide-react'
 import { Link } from '@inertiajs/react'
 import { Separator } from '#common/ui/components/separator'
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '#common/ui/components/carousel'
+import emailsScreenshot from '../assets/screenshots/emails.webp'
 
 interface IntroHeroProps {}
 
@@ -47,9 +55,26 @@ const IntroHero: React.FunctionComponent<IntroHeroProps> = () => {
             </div>
           </div>
         </div>
-        <h3 className="py-16 sm:py-32 text-white text-5xl font-medium text-center z-10 max-w-2xl mx-auto">
+        <h3 className="py-16 sm:py-32 text-white text-5xl font-medium text-center z-10 max-w-2xl mx-auto mt-12 sm:mt-24">
           Panache is an <em>open-source</em> <u>everything-app</u>.
         </h3>
+        <Carousel className="w-full max-w-xs mx-auto">
+          <CarouselContent>
+            {Array.from({ length: 5 }).map((_, index) => (
+              <CarouselItem key={index}>
+                <div className="p-1">
+                  <div>
+                    <div className="flex aspect-square items-center justify-center p-6">
+                      <span className="text-4xl font-semibold text-white">{index + 1}</span>
+                    </div>
+                  </div>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
       </div>
     </div>
   )

@@ -18,6 +18,7 @@ export default class SignUpController {
 
     const user = await User.create(payload)
     await user.save()
+
     await auth.use('web').login(user)
 
     return response.redirect('/emails/inbox')
