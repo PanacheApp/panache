@@ -1,57 +1,10 @@
 import * as React from 'react'
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '#common/ui/components/table'
 import DashboardLayout from '#common/ui/components/dashboard_layout'
+import { ColumnDef } from '@tanstack/react-table'
+import { DataTable } from './components/data-table'
+import { TopBarContent } from '#drive/ui/pages/components/layouts/top_bar_content'
 
 interface DriveProps {}
-
-const Drive: React.FunctionComponent<DriveProps> = () => {
-  const columns: ColumnDef<Payment>[] = [
-    {
-      accessorKey: 'status',
-      header: 'Status',
-    },
-    {
-      accessorKey: 'email',
-      header: 'Email',
-    },
-    {
-      accessorKey: 'amount',
-      header: 'Amount',
-    },
-  ]
-  return (
-    <DashboardLayout
-      className="!p-0"
-      moduleName="Drive"
-      topChildren={<p className="font-semibold text-lg">Drive</p>}
-    >
-      <DataTable
-        columns={columns}
-        data={
-          [
-            {
-              id: '728ed52f',
-              amount: 100,
-              status: 'pending',
-              email: 'm@example.com',
-            },
-            // ...
-          ] satisfies Payment[]
-        }
-      />
-    </DashboardLayout>
-  )
-}
-
-export default Drive
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -62,56 +15,58 @@ export type Payment = {
   email: string
 }
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
-}
 
-export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  })
+const columns: ColumnDef<Payment>[] = [
+  {
+    accessorKey: 'status',
+    header: 'Status',
+  },
+  {
+    accessorKey: 'email',
+    header: 'Email',
+  },
+  {
+    accessorKey: 'amount',
+    header: 'Amount',
+  },
+]
 
+const Drive: React.FunctionComponent<DriveProps> = () => {
+  const [activeView, setActiveView] = React.useState<React.ComponentProps<typeof TopBarContent>['activeView']>('list-view')
+
+  function onListViewSelect() {
+      setActiveView('list-view')
+  }
+
+  function onGridViewSelect() {
+      setActiveView('grid-view')
+  }
+ 
   return (
-    <div>
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(header.column.columnDef.header, header.getContext())}
-                  </TableHead>
-                )
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </div>
+    <DashboardLayout
+      className="!p-0"
+      moduleName="Drive"
+      topChildren={<TopBarContent activeView={activeView} onGridViewSelect={onGridViewSelect} onListViewSelect={onListViewSelect}  />}
+      leftChildren={<SidebarContent />}
+    >
+      <DataTable<Payment, any>
+        columns={columns}
+        data={
+          [
+            {
+              id: '728ed52f',
+              amount: 100,
+              status: 'pending',
+              email: 'm@example.com',
+            },
+          ] 
+        }
+      />
+    </DashboardLayout>
   )
 }
+
+export default Drive
+
+
+
