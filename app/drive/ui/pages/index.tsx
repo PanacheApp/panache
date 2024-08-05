@@ -3,6 +3,7 @@ import DashboardLayout from '#common/ui/components/dashboard_layout'
 import { ColumnDef } from '@tanstack/react-table'
 import { DataTable } from './components/data-table'
 import { TopBarContent } from '#drive/ui/pages/components/layouts/top_bar_content'
+import { SidebarContent } from './components/layouts/sidebar_content'
 
 interface DriveProps {}
 
