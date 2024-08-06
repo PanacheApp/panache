@@ -26,7 +26,15 @@ const dbConfig = defineConfig({
         ],
       },
       seeders: {
-        paths: ['./app/**/database/seeders'],
+        paths: [
+          './app/auth/database/seeders',
+          './app/business/database/seeders',
+          './app/calendar/database/seeders',
+          './app/common/database/seeders',
+          './app/drive/database/seeders',
+          './app/emails/database/seeders',
+          './app/teams/database/seeders',
+        ],
       },
     },
   },
