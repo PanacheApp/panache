@@ -1,5 +1,5 @@
 import { cn } from '#common/ui/lib/cn'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useEventCalendar } from '../providers/event_calendar_provider'
 
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -47,7 +47,9 @@ export const MonthlyViewCalendar = () => {
 
   const allDays = [...firstWeekOverflowDates, ...currentMonthDays, ...fullLastWeekOverflowDates]
 
-  const addNewEvent = (selectedDay) => {
+  const addNewEvent = (selectedDay: number) => {
+    console.log(selectedDay)
+
     setIsNewEventModalOpen(true)
   }
 

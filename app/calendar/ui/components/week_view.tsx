@@ -1,13 +1,15 @@
 import { cn } from '#common/ui/lib/cn'
 import { format } from 'date-fns'
-import { Fragment, useEffect, useRef } from 'react'
+import { ComponentRef, Fragment, useEffect, useRef } from 'react'
 import { useEventCalendar } from '../providers/event_calendar_provider'
+
+type DivRef = ComponentRef<'div'>
 
 export const WeeklyViewCalendar = () => {
   const { selectedDate } = useEventCalendar()
-  const container = useRef(null)
-  const containerNav = useRef(null)
-  const containerOffset = useRef(null)
+  const container = useRef<DivRef>(null)
+  const containerNav = useRef<DivRef>(null)
+  const containerOffset = useRef<DivRef>(null)
 
   // Generate week days with the date
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -51,7 +53,6 @@ export const WeeklyViewCalendar = () => {
       end,
     }
   })
-
 
   useEffect(() => {
     // Set the container scroll position based on the current time.
