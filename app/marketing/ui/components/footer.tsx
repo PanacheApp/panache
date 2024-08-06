@@ -32,7 +32,7 @@ export default function Footer() {
     social: [
       {
         name: 'GitHub',
-        href: '#',
+        href: 'https://github.com/PanacheApp/panache',
         icon: () => (
           <svg fill="currentColor" viewBox="0 0 24 24" className="h-6 w-6">
             <path

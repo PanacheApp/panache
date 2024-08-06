@@ -1,7 +1,7 @@
 import BaseModel from '#common/database/models/base_model'
 import User from '#common/database/models/user'
 import { belongsTo, column } from '@adonisjs/lucid/orm'
-import { BelongsTo } from '@adonisjs/lucid/types/relations'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 
 export default class Email extends BaseModel {
   /**
@@ -34,9 +34,15 @@ export default class Email extends BaseModel {
   /**
    * Relationships.
    */
+  @belongsTo(() => User)
+  declare user: BelongsTo<typeof User>
+
   @column()
   declare userId: string
 
-  @belongsTo(() => User)
-  declare user: BelongsTo<typeof User>
+  @belongsTo(() => Email)
+  declare replyTo: BelongsTo<typeof Email>
+
+  @column()
+  declare replyToId: string | null
 }

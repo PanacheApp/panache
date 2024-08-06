@@ -1,9 +1,17 @@
 import * as React from 'react'
-import extendedIllustration from '../assets/extended_illustration.png'
+import extendedIllustration from '../assets/extended_illustration.webp'
 import { Button } from '#common/ui/components/button'
 import { GithubIcon } from 'lucide-react'
 import { Link } from '@inertiajs/react'
 import { Separator } from '#common/ui/components/separator'
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '#common/ui/components/carousel'
+import emailsScreenshot from '../assets/screenshots/emails.webp'
 
 interface IntroHeroProps {}
 
@@ -47,8 +55,22 @@ const IntroHero: React.FunctionComponent<IntroHeroProps> = () => {
             </div>
           </div>
         </div>
-        <h3 className="py-16 sm:py-32 text-white text-5xl font-medium text-center z-10 max-w-2xl mx-auto">
+        <h3 className="py-16 sm:py-32 text-white text-5xl font-medium text-center z-10 max-w-2xl mx-auto mt-12 sm:mt-24 lg:mt-[600px]">
           Panache is an <em>open-source</em> <u>everything-app</u>.
+        </h3>
+        <Carousel className="w-full max-w-xl mx-auto">
+          <CarouselContent>
+            {Array.from({ length: 5 }).map((_, index) => (
+              <CarouselItem key={index}>
+                <img src={emailsScreenshot} alt="Emails" className="object-cover" />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+        <h3 className="py-16 text-white text-xl text-center z-10 max-w-2xl mx-auto">
+          Send emails with panache.
         </h3>
       </div>
     </div>

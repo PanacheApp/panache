@@ -26,14 +26,14 @@ const Navbar: React.FunctionComponent<NavbarProps> = () => {
                 <svg width="16" height="16" viewBox="0 0 20 20">
                   <path
                     fill="transparent"
-                    stroke-width="2"
+                    strokeWidth="2"
                     stroke="white"
                     strokeLinecap="square"
                     d="M 2 2.5 L 20 2.5"
                   ></path>
                   <path
                     fill="transparent"
-                    stroke-width="2"
+                    strokeWidth="2"
                     stroke="white"
                     strokeLinecap="square"
                     d="M 2 9.423 L 20 9.423"
@@ -41,7 +41,7 @@ const Navbar: React.FunctionComponent<NavbarProps> = () => {
                   ></path>
                   <path
                     fill="transparent"
-                    stroke-width="2"
+                    strokeWidth="2"
                     stroke="white"
                     strokeLinecap="square"
                     d="M 2 16.346 L 20 16.346"
