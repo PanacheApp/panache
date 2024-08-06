@@ -65,7 +65,7 @@ const VanillaDashboardLayout: React.FunctionComponent<VanillaDashboardLayoutProp
         <div className="flex h-full max-h-screen flex-col gap-2">
           <SwitchProductMenu moduleName={moduleName} />
           <div className="flex-1 flex flex-col items-between h-full">
-            <div>{leftChildren}</div>
+            <div className='flex-1'>{leftChildren}</div>
             <SettingsDialog>
               <DropdownMenu>
                 <DropdownMenuTrigger className="mt-auto flex py-2 px-4 items-center space-x-4 lg:px-6 border-t">
