@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { Button } from "#common/ui/components/button";
-import { ChevronDown, DownloadIcon, FolderPlusIcon, LayoutGrid, LinkIcon, ListIcon } from "lucide-react";
+import { ChevronDown, DownloadIcon, FolderPlusIcon, ImageIcon, LayoutGrid, LinkIcon, ListIcon, PaperclipIcon } from "lucide-react";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '#common/ui/components/dropdown_menu';
+import { Dialog, DialogContent, DialogTrigger } from '#common/ui/components/dialog';
+import { useFileUpload } from '#drive/hooks/use_file_upload'
+import { ScrollArea } from '#common/ui/components/scroll_area'
+import { formatBytes } from '#common/ui/lib/format_bytes'
 
 interface Props {
     onListViewSelect: () => void;
@@ -45,9 +49,76 @@ export function TopBarContent(props: Props) {
                     </DropdownMenuContent>
                 </DropdownMenu>
                 
-                <Button variant='outline' size='sm'>Upload</Button>
+                <Uploader />
                 <Button size='sm'>Share</Button>
             </div>
         </div>
     )
 }
+
+
+export function Uploader() {
+    const fileInputRef = React.useRef<HTMLInputElement>(null);
+    const [files, setFiles] = React.useState<File[] | null >();
+    const [uploadedFiles, setUploadFiles] = React.useState<any[]>([]);
+    const { uploadFile, uploadProgress, status, errors  } = useFileUpload('/drive/upload');
+
+    const onFilesCganges = (event) => {
+        const files = Array.from(event.target.files) as File[];
+        setFiles(files);
+        
+        const uploadPromises = files.map((file, i) => uploadFile(file, i));
+
+        Promise.all(uploadPromises)
+        .then(setUploadFiles)
+        .catch(console.error)
+    };
+    
+      // Trigger the file input click when the button is pressed
+    const openFilePicker = () => {
+        fileInputRef.current?.click();
+    };
+
+    return (
+      <Dialog>
+        <DialogTrigger asChild>
+            <Button variant='outline' size='sm'>Upload</Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-5xl">
+            <div className='w-full flex items-center justify-between'>
+                <div className='flex items-center gap-x-2'>
+                        <span className='p-4 rounded-lg border border-border text-gray-600'>
+                            <PaperclipIcon className='size-5' />
+                        </span>
+                        <div className=''>
+                            <p className='font-semibold'>Upload files</p>
+                            <p className='text-gray-500'>Upload from your local computer</p> 
+                        </div>
+                </div>
+
+                <label htmlFor="files">
+                    <span className="sr-only">Choose profile photo</span>
+                    <input ref={fileInputRef} onChange={onFilesCganges}  name='files' type='file' className='hidden' multiple />
+                    <Button onClick={openFilePicker}>Upload files</Button>
+                </label>
+            </div>
+
+            { 
+                files && files.length > 0 ?
+                <ScrollArea className="h-fit  px-3">
+                    <ul className='space-y-2'>
+                        {files?.map((file, index) => (
+                            <li key={file.name} className='relative flex items-center p-2.5 rounded-md'>
+                                <div style={{ '--progression': `${uploadProgress[index]}%` } as any} className='absolute inset-0 w-[--progression] bg-green-800/25 rounded-md'></div>
+                                 <span className='p-2'> <ImageIcon /> </span> {file.name} - {formatBytes(file.size)} 
+                            </li>
+                        ))}
+                    </ul>
+                </ScrollArea>
+                : null
+            }
+            
+         </DialogContent>
+      </Dialog>
+    )
+  }

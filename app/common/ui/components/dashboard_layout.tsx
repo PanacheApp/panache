@@ -37,6 +37,7 @@ import {
   DialogTrigger,
 } from './dialog'
 import { Badge } from './badge'
+import { Toaster } from './sooner'
 
 interface VanillaDashboardLayoutProps extends React.PropsWithChildren {
   moduleName: string
@@ -60,6 +61,8 @@ const VanillaDashboardLayout: React.FunctionComponent<VanillaDashboardLayoutProp
   }
 
   return (
+    <>
+    <Toaster />
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-muted/40 md:block">
         <div className="flex h-full max-h-screen flex-col gap-2">
@@ -124,6 +127,8 @@ const VanillaDashboardLayout: React.FunctionComponent<VanillaDashboardLayoutProp
         </main>
       </div>
     </div>
+    </>
+
   )
 }
 
