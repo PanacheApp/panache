@@ -1,5 +1,4 @@
-import { useEventCalendar } from '#calendar/ui/providers/event_calendar_provider'
-
+import { useEventCalendar } from '#calendar/ui/hooks/use_event_calendar'
 import { useState } from 'react'
 
 const ROWS_TO_SHOW = 6

@@ -1,3 +1,4 @@
+import { useEventCalendar } from '#calendar/ui/hooks/use_event_calendar'
 import {
   ContextMenu,
   ContextMenuContent,
@@ -8,7 +9,6 @@ import { cn } from '#common/ui/lib/cn'
 import { isSameDay } from 'date-fns'
 import { useMemo } from 'react'
 import { useMonthlyView } from '../hooks/use_monthly_view'
-import { useEventCalendar } from '../providers/event_calendar_provider'
 
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 

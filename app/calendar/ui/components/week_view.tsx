@@ -1,7 +1,7 @@
+import { useEventCalendar } from '#calendar/ui/hooks/use_event_calendar'
 import { cn } from '#common/ui/lib/cn'
 import { format } from 'date-fns'
 import { ComponentRef, Fragment, useEffect, useRef } from 'react'
-import { useEventCalendar } from '../providers/event_calendar_provider'
 
 type DivRef = ComponentRef<'div'>
 

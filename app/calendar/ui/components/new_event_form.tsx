@@ -6,7 +6,7 @@ import { cn } from '#common/ui/lib/cn'
 import { format } from 'date-fns'
 import { CalendarIcon } from 'lucide-react'
 import { useState } from 'react'
-import { useEventCalendar } from '../providers/event_calendar_provider'
+import { useEventCalendar } from '#calendar/ui/hooks/use_event_calendar'
 
 const NewEventForm = () => {
   const { eventTitle, selectedDate, setEventTitle } = useEventCalendar()

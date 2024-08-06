@@ -18,7 +18,7 @@ type EventCalendarProviderProps = {
   handlePreviousWeek: () => void
 }
 
-const EventCalendarContext = React.createContext<EventCalendarProviderProps>(
+export const EventCalendarContext = React.createContext<EventCalendarProviderProps>(
   {} as EventCalendarProviderProps
 )
 
@@ -78,12 +78,4 @@ export const EventCalendarProvider: React.FC<PropsWithChildren> = ({ children })
       {children}
     </EventCalendarContext.Provider>
   )
-}
-
-export const useEventCalendar = () => {
-  if (!EventCalendarContext) {
-    throw new Error('useEventCalendar must be used within a EventCalendarProvider')
-  }
-
-  return React.useContext(EventCalendarContext)
 }

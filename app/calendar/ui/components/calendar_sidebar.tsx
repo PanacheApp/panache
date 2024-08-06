@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from '#common/ui/components/dialog'
 import { PlusIcon } from 'lucide-react'
-import { useEventCalendar } from '../providers/event_calendar_provider'
+import { useEventCalendar } from '#calendar/ui/hooks/use_event_calendar'
 import NewEventForm from './new_event_form'
 
 export const CalendarSidebar = () => {
