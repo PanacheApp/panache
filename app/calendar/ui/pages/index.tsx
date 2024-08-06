@@ -1,12 +1,14 @@
-import React from 'react'
+import { DndContext } from '@dnd-kit/core'
 import { EventCalendar } from '../components/event_calendar'
 import { EventCalendarProvider } from '../providers/event_calendar_provider'
 
 const CalendarPage = () => {
   return (
-    <EventCalendarProvider>
-      <EventCalendar />
-    </EventCalendarProvider>
+    <DndContext>
+      <EventCalendarProvider>
+        <EventCalendar />
+      </EventCalendarProvider>
+    </DndContext>
   )
 }
 

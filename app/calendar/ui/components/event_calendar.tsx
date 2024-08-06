@@ -9,7 +9,6 @@ import {
 } from '#common/ui/components/select'
 import { format } from 'date-fns'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import React from 'react'
 import { useEventCalendar } from '../providers/event_calendar_provider'
 import { CalendarSidebar } from './calendar_sidebar'
 import { MonthlyViewCalendar } from './monthly_view'
