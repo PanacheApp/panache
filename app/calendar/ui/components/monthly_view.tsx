@@ -5,122 +5,81 @@ import {
   ContextMenuTrigger,
 } from '#common/ui/components/context_menu'
 import { cn } from '#common/ui/lib/cn'
-import { useDraggable, useDroppable } from '@dnd-kit/core'
-import { isToday } from 'date-fns'
-import { useState } from 'react'
+import { isSameDay } from 'date-fns'
+import { useMemo } from 'react'
+import { useMonthlyView } from '../hooks/use_monthly_view'
 import { useEventCalendar } from '../providers/event_calendar_provider'
 
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
-const newEventActions = [
-  { label: 'Duplicate', onClick: () => console.log('Duplicate') },
-  { label: 'Export', onClick: () => console.log('Export') },
-  { label: 'Delete', onClick: () => console.log('Delete') },
-]
-
 export const MonthlyViewCalendar = () => {
-  const { isOver, node, setNodeRef } = useDroppable({
-    id: 'droppable',
-  })
-  const {
-    attributes,
-    listeners,
-    setNodeRef: setDraggableRef,
-  } = useDraggable({
-    id: 'draggable',
-  })
-  const { selectedDate, setIsNewEventModalOpen } = useEventCalendar()
-  const [clickedDayIndex, setClickedDayIndex] = useState<number | null>(null)
+  const { setIsNewEventModalOpen, eventTitle, setSelectedDate } = useEventCalendar()
+  const { allDays, setClickedDayIndex } = useMonthlyView()
 
-  const month = selectedDate.getMonth()
-  const year = selectedDate.getFullYear()
-
-  const daysInCurrentMonth = new Date(year, month + 1, 0).getDate()
-  const daysInPrevMonth = new Date(year, month, 0).getDate()
-
-  const currentMonthDays = Array.from({ length: daysInCurrentMonth }, (_, i) => i + 1)
-
-  const firstDayOfMonth = new Date(year, month, 1)
-  const lastDayOfMonth = new Date(year, month + 1, 0)
-
-  const firstDayOfWeek = firstDayOfMonth.getDay()
-  const lastDayOfWeek = lastDayOfMonth.getDay()
-
-  // Overflow days calculation
-  const firstWeekOverflow = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1
-  const lastWeekOverflow = lastDayOfWeek === 0 ? 0 : 6 - lastDayOfWeek
-
-  // Dates for first week overflow
-  const firstWeekOverflowDates = Array.from(
-    { length: firstWeekOverflow },
-    (_, i) => daysInPrevMonth - firstWeekOverflow + i + 1
+  const newEventActions = useMemo(
+    () => [
+      { label: 'Duplicate', onClick: () => console.log('Duplicate') },
+      { label: 'Export', onClick: () => console.log('Export') },
+      { label: 'Delete', onClick: () => console.log('Delete') },
+    ],
+    []
   )
 
-  // Dates for last week overflow
-  const lastWeekOverflowDates = Array.from({ length: lastWeekOverflow }, (_, i) => i + 1)
-
-  // Calculate total number of days to display (including overflows)
-  const totalDays =
-    firstWeekOverflowDates.length + currentMonthDays.length + lastWeekOverflowDates.length
-  const remainingDays = 42 - totalDays
-
-  // Add remaining days from the next month to fill the 6 rows
-  const fullLastWeekOverflowDates = lastWeekOverflowDates.concat(
-    Array.from({ length: remainingDays }, (_, i) => lastWeekOverflow + i + 1)
-  )
-
-  const allDays = [
-    ...firstWeekOverflowDates,
-    ...currentMonthDays,
-    ...fullLastWeekOverflowDates,
-  ].map((day, index) => ({
-    day,
-    date: new Date(year, month, day),
-    openModal: clickedDayIndex === index,
-  }))
-
-  const addNewEvent = (dayIndex: number) => {
+  const addNewEvent = (date: Date, dayIndex: number) => {
+    setSelectedDate(date)
     setClickedDayIndex(dayIndex)
     setIsNewEventModalOpen(true)
   }
 
+  const navigateToWeek = (date: Date, weekIndex: number) => {
+    // TODO: Navigate to weekly view
+    console.log(date, weekIndex)
+  }
 
   return (
     <div className="h-full">
-      <div className="grid grid-cols-7 gap-2 border rounded-t">
+      <div className="grid grid-cols-7 gap-2 border-b">
         {days.map((day, index) => (
           <div key={index} className="col-span-1 flex items-center justify-center py-2">
             <h3 className="text-center text-sm font-semibold uppercase">{day}</h3>
           </div>
         ))}
       </div>
-      <div className="grid grid-cols-7 grid-rows-[repeat(6,minmax(14.2vh,7vh))] border-l rounded-b overflow-hidden">
+      <div className="grid grid-cols-7 grid-rows-[repeat(6,minmax(0vh,14.8vh))] overflow-hidden">
         {allDays.map((day, index) => (
-          <div className="col-span-1 row-span-1 relative" ref={setNodeRef}>
+          <div
+            key={`${day.day}-${index}`}
+            className="col-span-1 row-span-1 relative  border-b border-r"
+          >
             <div
-              key={index}
-              className="flex justify-end h-full w-full border-b border-r last:rounded-b"
-              onClick={() => addNewEvent(index)}
+              className="flex justify-end h-full w-full"
+              onClick={() => addNewEvent(day.date, index)}
             >
-              <h3
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  navigateToWeek(day.date, index)
+                }}
                 className={cn(
                   'text-center text-sm font-semibold uppercase self-start pt-[1.5px] m-2 h-6 w-6 rounded-full',
-                  isToday(day.date) ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'
+                  isSameDay(new Date(), day.date)
+                    ? 'bg-primary text-primary-foreground'
+                    : 'text-muted-foreground'
                 )}
               >
                 {day.day}
-              </h3>
+              </button>
             </div>
-            {day.openModal && (
+            {day.isModalOpen && (
               <ContextMenu>
-                <ContextMenuTrigger>
-                  <div
-                    ref={setDraggableRef}
-                    {...listeners}
-                    {...attributes}
-                    className="bg-primary text-primary-foreground absolute top-10 left-3 right-3 px-2 flex items-center rounded"
-                  >
-                    <small>New Event</small>
+                <ContextMenuTrigger
+                  onClick={() => {
+                    setSelectedDate(day.date)
+                    setIsNewEventModalOpen(true)
+                  }}
+                >
+                  <div className="bg-primary text-primary-foreground absolute top-10 left-2 right-2 px-2 flex items-center rounded cursor-pointer">
+                    <small>{eventTitle || 'Untitled event'}</small>
                   </div>
                 </ContextMenuTrigger>
                 <ContextMenuContent>

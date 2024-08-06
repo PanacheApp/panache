@@ -5,9 +5,13 @@ type EventCalendarProviderProps = {
   selectedDate: Date
   userTimezone: string
   isNewEventModalOpen: boolean
+  eventTitle: string | null
+  // eventDescriptionRef: InputRef | null
+  // eventLocationRef: InputRef | null
   setIsWeekView: React.Dispatch<React.SetStateAction<boolean>>
   setSelectedDate: React.Dispatch<React.SetStateAction<Date>>
   setIsNewEventModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setEventTitle: React.Dispatch<React.SetStateAction<string | null>>
   handleNextMonth: () => void
   handlePreviousMonth: () => void
   handleNextWeek: () => void
@@ -18,11 +22,16 @@ const EventCalendarContext = React.createContext<EventCalendarProviderProps>(
   {} as EventCalendarProviderProps
 )
 
+// type InputRef = React.RefObject<HTMLInputElement>
+
 export const EventCalendarProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [isWeekView, setIsWeekView] = useState(true)
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [userTimezone] = useState(Intl.DateTimeFormat().resolvedOptions().timeZone)
   const [isNewEventModalOpen, setIsNewEventModalOpen] = useState(false)
+  const [eventTitle, setEventTitle] = useState<string | null>(null)
+  // const eventDescriptionRef = useRef<InputRef | null>(null)
+  // const eventLocationRef = useRef<InputRef | null>(null)
 
   const handleNextMonth = () => {
     const nextMonth = new Date(selectedDate as Date)
@@ -55,9 +64,11 @@ export const EventCalendarProvider: React.FC<PropsWithChildren> = ({ children })
         selectedDate,
         userTimezone,
         isNewEventModalOpen,
+        eventTitle,
         setIsWeekView,
         setSelectedDate,
         setIsNewEventModalOpen,
+        setEventTitle,
         handleNextMonth,
         handlePreviousMonth,
         handleNextWeek,

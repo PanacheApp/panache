@@ -5,22 +5,32 @@ import { Popover, PopoverContent, PopoverTrigger } from '#common/ui/components/p
 import { cn } from '#common/ui/lib/cn'
 import { format } from 'date-fns'
 import { CalendarIcon } from 'lucide-react'
-import * as React from 'react'
+import { useState } from 'react'
+import { useEventCalendar } from '../providers/event_calendar_provider'
 
 const NewEventForm = () => {
+  const { eventTitle, selectedDate, setEventTitle } = useEventCalendar()
+  const [date, setDate] = useState<Date | undefined>(selectedDate)
+
+  console.log(eventTitle)
+
   return (
     <div className="grid gap-4 py-4">
-      <Input id="name" value="Pedro Duarte" className="col-span-3" placeholder="Event title" />
-      <DatePickerDemo />
+      <Input
+        value={eventTitle || ''}
+        onChange={(e) => setEventTitle(e.target.value)}
+        id="name"
+        className="col-span-3"
+        placeholder="Event title"
+      />
+      <DatePicker date={date} onSelect={setDate} />
     </div>
   )
 }
 
 export default NewEventForm
 
-export function DatePickerDemo() {
-  const [date, setDate] = React.useState<Date>()
-
+export function DatePicker({ date, onSelect }: { date?: Date; onSelect: (date?: Date) => void }) {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -39,7 +49,7 @@ export function DatePickerDemo() {
         <Calendar
           mode="single"
           selected={date}
-          onSelect={setDate}
+          onSelect={onSelect}
           initialFocus
           className="w-full p-1 pt-3"
         />
