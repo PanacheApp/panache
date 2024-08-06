@@ -1,7 +1,7 @@
-import * as React from 'react'
-import logo from '../assets/logo.png'
-import { Button } from './button'
-import { Sheet, SheetTrigger, SheetContent } from './sheet'
+import usePath from '#common/ui/hooks/use_path'
+import useUser from '#common/ui/hooks/use_user'
+import { cn } from '#common/ui/lib/cn'
+import { Link, useForm } from '@inertiajs/react'
 import {
   BriefcaseBusinessIcon,
   CalendarIcon,
@@ -13,19 +13,11 @@ import {
   Share2Icon,
   UsersIcon,
 } from 'lucide-react'
+import * as React from 'react'
+import logo from '../assets/logo.png'
 import { Avatar, AvatarFallback } from './avatar'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from './dropdown_menu'
-import { cn } from '#common/ui/lib/cn'
-import { Link, useForm } from '@inertiajs/react'
-import useUser from '#common/ui/hooks/use_user'
-import usePath from '#common/ui/hooks/use_path'
+import { Badge } from './badge'
+import { Button } from './button'
 import {
   Dialog,
   DialogClose,
@@ -36,7 +28,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from './dialog'
-import { Badge } from './badge'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from './dropdown_menu'
+import { Sheet, SheetContent, SheetTrigger } from './sheet'
 
 interface VanillaDashboardLayoutProps extends React.PropsWithChildren {
   moduleName: string
@@ -65,7 +65,7 @@ const VanillaDashboardLayout: React.FunctionComponent<VanillaDashboardLayoutProp
         <div className="flex h-full max-h-screen flex-col gap-2">
           <SwitchProductMenu moduleName={moduleName} />
           <div className="flex-1 flex flex-col items-between h-full">
-            <div>{leftChildren}</div>
+            <div className="h-full">{leftChildren}</div>
             <SettingsDialog>
               <DropdownMenu>
                 <DropdownMenuTrigger className="mt-auto flex py-2 px-4 items-center space-x-4 lg:px-6 border-t">
@@ -147,6 +147,14 @@ export function SwitchProductMenu({ moduleName }: { moduleName: string }) {
       isCurrent: path.startsWith('/emails'),
     },
     {
+      title: 'Panache Calendar',
+      href: '/calendar',
+      description: 'Manage your schedule and events.',
+      icon: <CalendarIcon className="h-4 w-4 mr-2 text-primary" />,
+      isCurrent: path.startsWith('/calendar'),
+      isComingSoon: false,
+    },
+    {
       title: 'Panache Drive',
       href: '/drive',
       description: 'Store and share your files.',
@@ -160,14 +168,6 @@ export function SwitchProductMenu({ moduleName }: { moduleName: string }) {
       description: 'Collaborate with your team in real-time.',
       icon: <UsersIcon className="h-4 w-4 mr-2 text-primary" />,
       isCurrent: path.startsWith('/teams'),
-      isComingSoon: true,
-    },
-    {
-      title: 'Panache Calendar',
-      href: '/calendar',
-      description: 'Manage your schedule and events.',
-      icon: <CalendarIcon className="h-4 w-4 mr-2 text-primary" />,
-      isCurrent: path.startsWith('/calendar'),
       isComingSoon: true,
     },
     {
