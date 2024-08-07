@@ -123,7 +123,7 @@ const SignUp: React.FunctionComponent<SignUpProps> = () => {
             className="lowercase"
             id="backupEmail"
             type="text"
-            placeholder={t('auth.backup_email_placeholder')}
+            placeholder={t('common.email_placeholder')}
             value={form.data.backupEmail}
             onChange={(e) => form.setData('backupEmail', e.target.value)}
           />

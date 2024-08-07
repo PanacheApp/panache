@@ -11,7 +11,8 @@
     "test": "node ace test",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "fresh": "node ace migration:fresh && node ace db:seed"
   },
   "imports": {
     "#controllers/*": "./app/controllers/*.js",
@@ -92,9 +93,11 @@
     "@vinejs/vine": "^2.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "date-fns": "^3.6.0",
     "edge.js": "^6.0.2",
     "embla-carousel-react": "^8.1.8",
     "framer-motion": "^11.3.21",
+    "jotai": "^2.9.1",
     "lucide-react": "^0.417.0",
     "luxon": "^3.4.4",
     "mailparser": "^3.7.1",

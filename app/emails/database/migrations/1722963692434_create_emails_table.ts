@@ -7,9 +7,9 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.string('id').primary()
 
-      table.string('subject').notNullable()
-      table.string('from').notNullable()
-      table.string('to').notNullable()
+      table.string('subject')
+      table.string('from')
+      table.string('to')
       table.string('cc')
       table.string('bcc')
       table.text('text')

@@ -19,6 +19,13 @@ const SignIn: React.FunctionComponent<SignInProps> = () => {
     password: '',
   })
 
+  const fillDevelopmentValues = () => {
+    form.setData({
+      localPart: 'paul.valery',
+      password: 'password123',
+    })
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     form.post('/auth/sign_in')
@@ -71,6 +78,17 @@ const SignIn: React.FunctionComponent<SignInProps> = () => {
           {form.processing && <LoaderIcon className="w-4 h-4" />}
           <span>{t('auth.sign_in')}</span>
         </Button>
+
+        {process.env.NODE_ENV === 'development' && (
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full mt-2"
+            onClick={fillDevelopmentValues}
+          >
+            {t('auth.fill_development_values')}
+          </Button>
+        )}
       </form>
       <div className="mt-4 text-center text-sm">
         {t('auth.dont_have_account')}{' '}

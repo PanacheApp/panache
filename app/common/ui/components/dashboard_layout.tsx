@@ -116,7 +116,7 @@ const VanillaDashboardLayout: React.FunctionComponent<VanillaDashboardLayoutProp
         </header>
         <main
           className={cn(
-            ' overflow-y-auto !max-h-[calc(100vh-60px)] flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6',
+            'overflow-y-auto !max-h-[calc(100vh-60px)] flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6',
             className
           )}
         >
