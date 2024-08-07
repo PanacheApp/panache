@@ -6,11 +6,12 @@ import { Dialog, DialogContent, DialogTrigger } from '#common/ui/components/dial
 import { useFileUpload } from '#drive/hooks/use_file_upload'
 import { ScrollArea } from '#common/ui/components/scroll_area'
 import { formatBytes } from '#common/ui/lib/format_bytes'
+import { useToggle } from '#common/ui/hooks/use_toggle';
 
 interface Props {
     onListViewSelect: () => void;
     onGridViewSelect: () => void;
-    activeView: 'list-view' | 'grid-view';
+    activeView: 'row-view' | 'grid-view';
 }
 
 export function TopBarContent(props: Props) {
@@ -34,7 +35,7 @@ export function TopBarContent(props: Props) {
                
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild> 
-                        <Button size='sm' variant='outline'> <ChevronDown className='h-4 w-4' /> { activeView === 'list-view' 
+                        <Button size='sm' variant='outline'> <ChevronDown className='h-4 w-4' /> { activeView === 'row-view' 
                             ? <>  <ListIcon className='w-4 h-4' /> </> 
                             : <> <LayoutGrid className='w-4 h-4' />  </> }
                         </Button>
@@ -57,34 +58,60 @@ export function TopBarContent(props: Props) {
 }
 
 
+
+
 export function Uploader() {
     const fileInputRef = React.useRef<HTMLInputElement>(null);
-    const [files, setFiles] = React.useState<File[] | null >();
-    const [uploadedFiles, setUploadFiles] = React.useState<any[]>([]);
-    const { uploadFile, uploadProgress, status, errors  } = useFileUpload('/drive/upload');
+    const folderInputRef = React.useRef<HTMLInputElement>(null);
 
-    const onFilesCganges = (event) => {
-        const files = Array.from(event.target.files) as File[];
-        setFiles(files);
+    const [files, setFiles] = React.useState<File[] | null >([]);
+    const [uploadedFiles, setUploadFiles] = React.useState<any[]>([]);
+    const [errors, setErrors] = React.useState<any[]>([]);
+    const {value: open, toggle} = useToggle();
+    const { uploadFile, uploadProgress  } = useFileUpload('/drive/upload');
+
+    const onFilesUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = Array.from(event.target.files!) as File[];
+        setFiles(prev => [...prev!, ...files]);
         
         const uploadPromises = files.map((file, i) => uploadFile(file, i));
 
         Promise.all(uploadPromises)
         .then(setUploadFiles)
-        .catch(console.error)
+        .catch(setErrors)
     };
     
-      // Trigger the file input click when the button is pressed
+    const onFolderUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = Array.from(event.target.files!) as File[];
+        setFiles(files);
+    
+        const uploadPromises = files.map((file, i) => uploadFile(file, i));
+
+        Promise.all(uploadPromises)
+        .then(setUploadFiles)
+        .catch(setErrors)
+    };
+
+    // Trigger the file input click when the button is pressed
     const openFilePicker = () => {
         fileInputRef.current?.click();
     };
 
+    const openFolderPicker = () => {
+        folderInputRef.current?.click();
+    };
+
+    const onClose = () => {
+            toggle();
+            setFiles([]);
+    }
+
     return (
-      <Dialog>
+      <Dialog open={open as boolean}>
         <DialogTrigger asChild>
-            <Button variant='outline' size='sm'>Upload</Button>
+            <Button onClick={() => toggle()} variant='outline' size='sm'>Upload</Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-5xl">
+        <DialogContent onInteractOutside={() => onClose()} hideCloseButton className=" flex flex-col aspect-video sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-5xl">
             <div className='w-full flex items-center justify-between'>
                 <div className='flex items-center gap-x-2'>
                         <span className='p-4 rounded-lg border border-border text-gray-600'>
@@ -98,8 +125,26 @@ export function Uploader() {
 
                 <label htmlFor="files">
                     <span className="sr-only">Choose profile photo</span>
-                    <input ref={fileInputRef} onChange={onFilesCganges}  name='files' type='file' className='hidden' multiple />
+                    <input ref={fileInputRef} onChange={onFilesUpload}  name='files' type='file' className='hidden' multiple />
                     <Button onClick={openFilePicker}>Upload files</Button>
+                </label>
+            </div>
+
+            <div className='w-full flex items-center justify-between'>
+                <div className='flex items-center gap-x-2'>
+                        <span className='p-4 rounded-lg border border-border text-gray-600'>
+                            <PaperclipIcon className='size-5' />
+                        </span>
+                        <div className=''>
+                            <p className='font-semibold'>Upload folder</p>
+                            <p className='text-gray-500'>Upload from your local computer</p> 
+                        </div>
+                </div>
+
+                <label htmlFor="files">
+                    <span className="sr-only">Choose profile photo</span>
+                    <input ref={folderInputRef} onChange={onFolderUpload}  name='files' type='file' className='hidden' webkitdirectory="" directory="" multiple />
+                    <Button onClick={openFolderPicker}>Upload folder</Button>
                 </label>
             </div>
 

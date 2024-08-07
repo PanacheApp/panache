@@ -2,7 +2,6 @@ import { S3Client, CreateBucketCommand, HeadBucketCommand, PutObjectCommand } fr
 import env from '#start/env'
 import { MultipartFile } from '@adonisjs/core/bodyparser'
 import fs from 'fs'
-import path from 'path'
 
 export default class S3Service {
   #client: S3Client
@@ -51,40 +50,8 @@ export default class S3Service {
     }
   }
 
-  async uploadFolder(bucketName: string, folderPath: string, s3FolderKey: string): Promise<void> {
-    const files = this.getAllFiles(folderPath)
-
-    for (const file of files) {
-      const key = path.join(s3FolderKey, path.relative(folderPath, file))
-      const fileStream = fs.createReadStream(file)
-
-      const uploadParams = {
-        Bucket: bucketName,
-        Key: key,
-        Body: fileStream,
-      }
-
-      try {
-        await this.#client.send(new PutObjectCommand(uploadParams))
-      } catch (error) {
-        throw new Error(`Error uploading file ${file}: ${error.message}`)
-      }
-    }
+  // TODO: implement folder uploadWhat
+   async uploadFolder(): Promise<void> {
+ 
   }
-
-  private getAllFiles(dirPath: string, arrayOfFiles: string[] = []): string[] {
-    const files = fs.readdirSync(dirPath)
-
-    files.forEach((file) => {
-      const filePath = path.join(dirPath, file)
-      if (fs.statSync(filePath).isDirectory()) {
-        arrayOfFiles = this.getAllFiles(filePath, arrayOfFiles)
-      } else {
-        arrayOfFiles.push(filePath)
-      }
-    })
-
-    return arrayOfFiles
-  }
-
 }

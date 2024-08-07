@@ -10,10 +10,10 @@ interface DriveProps {}
 
 
 const Drive: React.FunctionComponent<DriveProps> = () => {
-  const [activeView, setActiveView] = React.useState<React.ComponentProps<typeof TopBarContent>['activeView']>('list-view')
+  const [activeView, setActiveView] = React.useState<React.ComponentProps<typeof TopBarContent>['activeView']>('row-view')
 
   function onListViewSelect() {
-      setActiveView('list-view')
+      setActiveView('row-view')
   }
 
   function onGridViewSelect() {

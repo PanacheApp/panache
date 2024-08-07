@@ -20,6 +20,9 @@ export default class File extends BaseModel {
   @column()
   declare size: number
 
+  @column()
+  declare mime: string;
+
   @belongsTo(() => User)
   declare created_by: BelongsTo<typeof User>
 
