@@ -11,11 +11,14 @@ export default class File extends BaseModel {
   @column()
   declare path: string | null
 
+  @column()
+  declare parentId: string | null
+
   @belongsTo(() => File)
-  declare parent_id: BelongsTo<typeof File> | null
+  declare parent: BelongsTo<typeof File> | null
 
   @column()
-  declare is_folder: boolean
+  declare isFolder: boolean
 
   @column()
   declare size: number
@@ -23,13 +26,13 @@ export default class File extends BaseModel {
   @column()
   declare mime: string;
 
-  @belongsTo(() => User)
-  declare created_by: BelongsTo<typeof User>
-
-  @belongsTo(() => User)
-  declare updated_by: BelongsTo<typeof User> | null
+  @column()
+  declare createdBy: string | null
 
   @column()
-  declare deleted_at: DateTime | null
+  declare updatedBy: string | null
+
+  @column()
+  declare deletedAt: DateTime | null
 
 }

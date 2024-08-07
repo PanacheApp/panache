@@ -9,7 +9,8 @@ import { File } from '#drive/types/file'
 interface DriveProps {}
 
 
-const Drive: React.FunctionComponent<DriveProps> = () => {
+const Drive: React.FunctionComponent<DriveProps> = (props) => {
+  console.log(( props ))
   const [activeView, setActiveView] = React.useState<React.ComponentProps<typeof TopBarContent>['activeView']>('row-view')
 
   function onListViewSelect() {

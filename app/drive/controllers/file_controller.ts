@@ -12,16 +12,19 @@ export default class FileController {
     
     try {
       const path = `/${new Date().toISOString()}-${file?.clientName}`;
-      File.create({
+
+      await File.create({
         name: file?.clientName,
         mime: file?.type,
         size: file?.size,
-        path: path
+        path: path,
+        createdBy: auth.user?.id,
       })
       
       if(auth.user && file) {
         await s3Service.uploadFile(auth.user?.id, file, path)
       }
+      
       return response.created({
         message: "File uploaded successfully."
       })
