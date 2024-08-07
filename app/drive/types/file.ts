@@ -1,7 +1,7 @@
 export type File = {
     id: string
     name: string;
-    fileType: string;
-    fileSize: number;
+    mime: string;
+    size: number;
     createdAt: string;
 }

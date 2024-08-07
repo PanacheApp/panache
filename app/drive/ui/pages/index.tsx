@@ -4,13 +4,14 @@ import { DataTable } from '#drive/ui/components/data_table'
 import { TopBarContent } from '#drive/ui/components/layouts/top_bar_content'
 import { SidebarContent } from '#drive/ui/components/layouts/sidebar_content'
 import { columns } from '#drive/ui/components/columns'
-import { File } from '#drive/types/file'
+import File from '#drive/database/models/files'
 
-interface DriveProps {}
+interface Props {
+  files: File
+}
 
 
-const Drive: React.FunctionComponent<DriveProps> = (props) => {
-  console.log(( props ))
+const Drive: React.FunctionComponent<Props> = ({ files }) => {
   const [activeView, setActiveView] = React.useState<React.ComponentProps<typeof TopBarContent>['activeView']>('row-view')
 
   function onListViewSelect() {
@@ -30,17 +31,7 @@ const Drive: React.FunctionComponent<DriveProps> = (props) => {
     >
       <DataTable<File, any>
         columns={columns}
-        data={
-          [
-            {
-              id: '728ed52f',
-              name: '2',
-              fileType: 'JPEG',
-              fileSize: 10000,
-              createdAt: new Date().toISOString()
-            },
-          ]  
-        }
+        data={files}
       />
     </DashboardLayout>
   )

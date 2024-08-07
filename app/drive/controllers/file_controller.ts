@@ -18,6 +18,7 @@ export default class FileController {
         mime: file?.type,
         size: file?.size,
         path: path,
+        isFolder: false,
         createdBy: auth.user?.id,
       })
       
@@ -32,4 +33,7 @@ export default class FileController {
       logger.error({ error }, `An error occur when uploading the file ${auth.user?.id}`)
     }
   }
+
+  // TODO: implement trash function
+  // TODO: 
 }
