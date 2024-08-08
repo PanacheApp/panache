@@ -79,4 +79,8 @@ export const columns: ColumnDef<File>[] = [
       }).format(new Date(getValue<string>())) }</span>
     )
   },
+  {
+    accessorKey: 'id',
+    header: ''
+  }
 ]

@@ -35,5 +35,16 @@ export default class FileController {
   }
 
   // TODO: implement trash function
-  // TODO: 
+   async rename({ request, response, inertia  }: HttpContext) {
+      const name = request.input('name')
+      const id = request.param('id')
+
+
+      const file = await File.find(id)
+      if(file) {
+        await file.fill({ name }).save()
+      }
+
+      return inertia.location('/drive')
+   }
 }
