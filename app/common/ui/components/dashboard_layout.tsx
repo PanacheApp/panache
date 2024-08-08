@@ -38,14 +38,14 @@ import {
 } from './dialog'
 import { Badge } from './badge'
 
-interface VanillaDashboardLayoutProps extends React.PropsWithChildren {
+interface DashboardLayoutProps extends React.PropsWithChildren {
   moduleName: string
   className?: string
   leftChildren?: React.ReactNode
   topChildren?: React.ReactNode
 }
 
-const VanillaDashboardLayout: React.FunctionComponent<VanillaDashboardLayoutProps> = ({
+const DashboardLayout: React.FunctionComponent<DashboardLayoutProps> = ({
   topChildren,
   leftChildren,
   moduleName,
@@ -134,7 +134,7 @@ const VanillaDashboardLayout: React.FunctionComponent<VanillaDashboardLayoutProp
   )
 }
 
-export default VanillaDashboardLayout
+export default DashboardLayout
 
 export function SwitchProductMenu({ moduleName }: { moduleName: string }) {
   const path = usePath()

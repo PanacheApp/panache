@@ -61,6 +61,7 @@ export default defineConfig({
     () => import('#auth/routes'),
     () => import('#drive/routes'),
     () => import('#emails/routes'),
+    () => import('#social/routes'),
     () => import('#start/kernel'),
     () => import('#start/events'),
   ],

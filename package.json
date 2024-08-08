@@ -21,6 +21,7 @@
     "#marketing/*": "./app/marketing/*.js",
     "#drive/*": "./app/drive/*.js",
     "#business/*": "./app/business/*.js",
+    "#social/*": "./app/social/*.js",
     "#emails/*": "./app/emails/*.js",
     "#services/*": "./app/services/*.js",
     "#listeners/*": "./app/listeners/*.js",
