@@ -34,7 +34,7 @@ export default class FileController {
     }
   }
 
-   async rename({ request, auth, inertia  }: HttpContext) {
+   async rename({ request, auth, inertia, session }: HttpContext) {
       const name = request.input('name')
       const id = request.param('id')
 
@@ -42,15 +42,20 @@ export default class FileController {
       if(file) {
         await file.merge({ name, updatedBy: auth.user?.id }).save()
       }
+      session.flash('message','File renamed.')
+
 
       return inertia.location('/drive')
    }
 
-   async trash({ request, inertia }: HttpContext) {
+  async trash({ request, inertia, session }: HttpContext) {
     const id = request.param('id')
 
     await File.query().where('id', id).update({ deletedAt: new Date() })
 
+
+    session.flash('message', 'File deleted.')
+
     return inertia.location('/drive')
- }
+  }
 }

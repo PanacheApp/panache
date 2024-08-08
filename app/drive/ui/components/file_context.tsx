@@ -3,20 +3,21 @@ import {
     ContextMenuContent,
     ContextMenuItem,
     ContextMenuTrigger,
-  } from "#common/ui/components/context_menu"
+} from "#common/ui/components/context_menu"
 import { PropsWithChildren } from "react"
-  
-export function FileContextMenu({ children, id, name }: PropsWithChildren<Pick<File, 'id' | 'name'>>) {
-  const { value: open, toggle } = useToggle();   
-  
-  const onDelete = () => {
-      router.delete('/drive/file/' + id, {
-        onSuccess() {
-          toast.success('File deleted successfully.')
-        }
-      })
-  }
+import { useToggle } from "#common/ui/hooks/use_toggle";
+import { router, useForm } from "@inertiajs/react";
+import { RenameFileModal } from "./rename_file_modal";
+import { File } from "#drive/types/file";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "#common/ui/components/dialog";
+import { Button } from "#common/ui/components/button";
 
+type Props = PropsWithChildren<Pick<File, 'id' | 'name'>>;
+
+export function FileContextMenu({ children, id, name }: Props) {
+  const { value: open, toggle } = useToggle(); 
+  const { value: openCloseModal, toggle: toggleCloseModal } = useToggle(); 
+  
   return (
       <>
         <ContextMenu>
@@ -27,63 +28,41 @@ export function FileContextMenu({ children, id, name }: PropsWithChildren<Pick<F
             <ContextMenuItem onClick={() => toggle()} >
                 Rename
             </ContextMenuItem>
-            <ContextMenuItem onClick={() => onDelete()} >
+            <ContextMenuItem onClick={() => toggleCloseModal()} >
                 Delete
             </ContextMenuItem>
           </ContextMenuContent>
         </ContextMenu>
+        <ConfirmDeleteModal open={openCloseModal} toggle={toggleCloseModal} id={id} name={name}  />
         <RenameFileModal open={open} toggle={toggle} id={id} name={name} />
       </>
     )
   }
   
+  type ConfirmDeleteModalProps = { open: boolean; toggle: () => void; name: string; id: string }
 
-import { Button } from "#common/ui/components/button"
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "#common/ui/components/dialog"
-import { Input } from "#common/ui/components/input"
-import { useToggle } from "#common/ui/hooks/use_toggle"
-import { File } from "#drive/types/file";
-import { router, useForm } from "@inertiajs/react";
-import { toast } from "sonner";
-
-export function RenameFileModal({ open, toggle, name, id }: { open: boolean; toggle: () => void; name: string; id: string }) {
- 
-  const form = useForm({
-    name
-  });
- 
-  const onSubmit = (e: React.FormEvent) => {
+function ConfirmDeleteModal({ open, toggle, name, id }: ConfirmDeleteModalProps) {
+  const form = useForm();
+  const onDelete = (e: React.FormEvent) => {
     e.preventDefault();
-    form.put('/drive/file/'+ id)
+    form.delete('/drive/file/' + id)
   }
- 
-  return (
-    <Dialog open={open}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Rename {name}</DialogTitle>
+
+  return <Dialog open={open}>
+    <DialogContent className="sm:max-w-[425px]" hideCloseButton>
+    <DialogHeader>
+          <DialogTitle>Send {name} to trash ?</DialogTitle>
+          <DialogDescription>This document and all children will be moved to trash.</DialogDescription>
         </DialogHeader>
-          <form id="rename-file" onSubmit={onSubmit} className="">
-            <Input
-              id="name"
-              defaultValue={name}
-              value={form.data.name}
-              onChange={(e) => form.setData('name', e.target.value)}
-            />
-          </form>
+         
         <DialogFooter>
-          <div className="space-x-2.5">
-            <Button onClick={() => toggle()} variant='secondary' type="submit">Annuler</Button>
-            <Button form="rename-file" type="submit">Rename</Button>
+          <div className="space-x-2">
+            <Button onClick={() => toggle()} variant='outline' type="submit">Cancel</Button>
+            <form onSubmit={onDelete} className="inline">
+              <Button type="submit" variant='destructive'>Trash</Button>
+            </form>
           </div>
         </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  )
+    </DialogContent>
+  </Dialog>
 }
