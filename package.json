@@ -20,6 +20,7 @@
     "#auth/*": "./app/auth/*.js",
     "#marketing/*": "./app/marketing/*.js",
     "#drive/*": "./app/drive/*.js",
+    "#business/*": "./app/business/*.js",
     "#emails/*": "./app/emails/*.js",
     "#services/*": "./app/services/*.js",
     "#listeners/*": "./app/listeners/*.js",
