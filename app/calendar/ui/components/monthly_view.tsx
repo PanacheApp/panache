@@ -9,8 +9,7 @@ import { cn } from '#common/ui/lib/cn'
 import { isSameDay } from 'date-fns'
 import { useMemo } from 'react'
 import { useMonthlyView } from '../hooks/use_monthly_view'
-
-const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+import { DAYS_IN_WEEK } from '#calendar/constants/index'
 
 export const MonthlyViewCalendar = () => {
   const { setIsNewEventModalOpen, eventTitle, setSelectedDate } = useEventCalendar()
@@ -39,13 +38,13 @@ export const MonthlyViewCalendar = () => {
   return (
     <div className="h-full">
       <div className="grid grid-cols-7 gap-2 border-b">
-        {days.map((day, index) => (
+        {DAYS_IN_WEEK.map((day, index) => (
           <div key={index} className="col-span-1 flex items-center justify-center py-2">
             <h3 className="text-center text-sm font-semibold uppercase">{day}</h3>
           </div>
         ))}
       </div>
-      <div className="grid grid-cols-7 grid-rows-[repeat(6,minmax(0vh,14.8vh))] overflow-hidden">
+      <div className="grid grid-cols-7 grid-rows-[repeat(6,minmax(14.8vh,1fr))] overflow-hidden">
         {allDays.map((day, index) => (
           <div
             key={`${day.day}-${index}`}
