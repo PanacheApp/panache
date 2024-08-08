@@ -109,6 +109,13 @@ const VanillaDashboardLayout: React.FunctionComponent<VanillaDashboardLayoutProp
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="flex flex-col">
+              <div className="flex items-center space-x-2 mb-4">
+                <img src={logo} alt="Panache" className="h-12 w-auto" />
+                <p className="font-bold">
+                  Panache <span className="font-normal">{moduleName}</span>
+                </p>
+              </div>
+
               {leftChildren}
             </SheetContent>
           </Sheet>
