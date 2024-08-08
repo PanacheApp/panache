@@ -159,7 +159,6 @@ export function SwitchProductMenu({ moduleName }: { moduleName: string }) {
       description: 'Store and share your files.',
       icon: <HardDrive className="h-4 w-4 mr-2 text-primary" />,
       isCurrent: path.startsWith('/drive'),
-      isComingSoon: true,
     },
     {
       title: 'Panache Teams',
@@ -167,7 +166,6 @@ export function SwitchProductMenu({ moduleName }: { moduleName: string }) {
       description: 'Collaborate with your team in real-time.',
       icon: <UsersIcon className="h-4 w-4 mr-2 text-primary" />,
       isCurrent: path.startsWith('/teams'),
-      isComingSoon: true,
     },
     {
       title: 'Panache Calendar',
@@ -175,7 +173,6 @@ export function SwitchProductMenu({ moduleName }: { moduleName: string }) {
       description: 'Manage your schedule and events.',
       icon: <CalendarIcon className="h-4 w-4 mr-2 text-primary" />,
       isCurrent: path.startsWith('/calendar'),
-      isComingSoon: true,
     },
     {
       title: 'Panache Social',
@@ -183,7 +180,6 @@ export function SwitchProductMenu({ moduleName }: { moduleName: string }) {
       description: 'Share your thoughts and connect with others.',
       icon: <Share2Icon className="h-4 w-4 mr-2 text-primary" />,
       isCurrent: path.startsWith('/social'),
-      isComingSoon: true,
     },
     {
       title: 'Panache Business',
@@ -191,7 +187,6 @@ export function SwitchProductMenu({ moduleName }: { moduleName: string }) {
       description: 'A set of tools tailored to your business needs.',
       icon: <BriefcaseBusinessIcon className="h-4 w-4 mr-2 text-primary" />,
       isCurrent: path.startsWith('/business'),
-      isComingSoon: true,
     },
   ]
 

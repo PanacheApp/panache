@@ -1,8 +1,5 @@
 import * as React from 'react'
-import { Input } from '#common/ui/components/input'
 import { Button } from '#common/ui/components/button'
-import { Avatar, AvatarFallback } from '#common/ui/components/avatar'
-import { Card, CardContent, CardHeader } from '#common/ui/components/card'
 import {
   HomeIcon,
   SearchIcon,
@@ -15,15 +12,10 @@ import {
 import DashboardLayout from '#common/ui/components/dashboard_layout'
 
 interface SocialLayoutProps extends React.PropsWithChildren {
-  moduleName: string
   className?: string
 }
 
-const SocialLayout: React.FunctionComponent<SocialLayoutProps> = ({
-  moduleName,
-  className,
-  children,
-}) => {
+const SocialLayout: React.FunctionComponent<SocialLayoutProps> = ({ className, children }) => {
   const leftMenu = (
     <div className="flex flex-col h-full px-3 py-1">
       <Button className="mb-4 w-full">Nouveau post</Button>
@@ -66,7 +58,7 @@ const SocialLayout: React.FunctionComponent<SocialLayoutProps> = ({
 
   return (
     <DashboardLayout
-      moduleName={moduleName}
+      moduleName="Social"
       className={className}
       leftChildren={leftMenu}
       topChildren={<h1 className="text-lg font-bold">Accueil</h1>}
