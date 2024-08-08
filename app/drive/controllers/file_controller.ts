@@ -34,14 +34,13 @@ export default class FileController {
     }
   }
 
-  // TODO: implement trash function
-   async rename({ request, response, inertia  }: HttpContext) {
+   async rename({ request, auth, inertia  }: HttpContext) {
       const name = request.input('name')
       const id = request.param('id')
 
       const file = await File.find(id)
       if(file) {
-        await file.merge({ name }).save()
+        await file.merge({ name, updatedBy: auth.user?.id }).save()
       }
 
       return inertia.location('/drive')
