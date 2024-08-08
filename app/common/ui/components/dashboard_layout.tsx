@@ -37,6 +37,7 @@ import {
   DialogTrigger,
 } from './dialog'
 import { Badge } from './badge'
+import { Toaster } from './sooner'
 
 interface DashboardLayoutProps extends React.PropsWithChildren {
   moduleName: string
@@ -60,12 +61,14 @@ const DashboardLayout: React.FunctionComponent<DashboardLayoutProps> = ({
   }
 
   return (
+    <>
+    <Toaster />
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-muted/40 md:block">
         <div className="flex h-full max-h-screen flex-col gap-2">
           <SwitchProductMenu moduleName={moduleName} />
           <div className="flex-1 flex flex-col items-between h-full">
-            <div>{leftChildren}</div>
+            <div className='flex-1'>{leftChildren}</div>
             <SettingsDialog>
               <DropdownMenu>
                 <DropdownMenuTrigger className="mt-auto flex py-2 px-4 items-center space-x-4 lg:px-6 border-t">
@@ -131,6 +134,8 @@ const DashboardLayout: React.FunctionComponent<DashboardLayoutProps> = ({
         </main>
       </div>
     </div>
+    </>
+
   )
 }
 
