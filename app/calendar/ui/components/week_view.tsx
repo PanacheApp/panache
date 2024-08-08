@@ -1,61 +1,159 @@
-import { useEventCalendar } from '#calendar/ui/hooks/use_event_calendar'
+import { useWeeklyView } from '#calendar/ui/hooks/use_weekly_view'
 import { cn } from '#common/ui/lib/cn'
+import { useDraggable, useDroppable } from '@dnd-kit/core'
 import { format } from 'date-fns'
-import { ComponentRef, Fragment, useEffect, useRef } from 'react'
+import { ComponentRef, Fragment, useEffect, useRef, useState } from 'react'
+
+const getTextColorForBackground = (backgroundColor: string) => {
+  const calculateRelativeLuminance = (color: any) => {
+    const gammaCorrection = (c: number) => {
+      const sRGB = c / 255
+      return sRGB <= 0.03928 ? sRGB / 12.92 : Math.pow((sRGB + 0.055) / 1.055, 2.4)
+    }
+
+    const r = gammaCorrection(color.r)
+    const g = gammaCorrection(color.g)
+    const b = gammaCorrection(color.b)
+
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b
+  }
+
+  const calculateContrastRatio = (l1: number, l2: number) => {
+    const [lDark, lLight] = l1 > l2 ? [l2, l1] : [l1, l2]
+    return (lLight + 0.05) / (lDark + 0.05)
+  }
+
+  const parseColor = (colorString: string) => {
+    const hexRegex = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i
+    const match = colorString.match(hexRegex)
+
+    if (match) {
+      return {
+        r: Number.parseInt(match[1], 16),
+        g: Number.parseInt(match[2], 16),
+        b: Number.parseInt(match[3], 16),
+      }
+    } else {
+      throw new Error('Invalid color format')
+    }
+  }
+
+  try {
+    const bg = parseColor(backgroundColor)
+    const bgLuminance = calculateRelativeLuminance(bg)
+
+    const whiteContrast = calculateContrastRatio(bgLuminance, 1)
+    const blackContrast = calculateContrastRatio(bgLuminance, 0)
+
+    if (whiteContrast > blackContrast) {
+      return 'white'
+    } else {
+      return 'black'
+    }
+  } catch (error) {
+    return 'black'
+  }
+}
 
 type DivRef = ComponentRef<'div'>
 
+const participants = [
+  {
+    id: '1',
+    name: 'John Doe',
+    email: 'john.doe@example.com',
+    photo: 'https://example.com/photo.jpg',
+  },
+  {
+    id: '2',
+    name: 'Jane Doe',
+    email: 'jane.doe@example.com',
+    photo: 'https://example.com/photo.jpg',
+  },
+]
+
+const events = [
+  {
+    id: '1',
+    title: 'Patrick <> John',
+    start: '2024-08-04T06:00',
+    end: '2024-08-04T06:30',
+    description: 'some description',
+    location: 'some location',
+    eventColor: '#21bee6',
+    organizer: {
+      id: '1',
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+      photo: 'https://example.com/photo.jpg',
+    },
+    participants: participants,
+  },
+  {
+    id: '2',
+    title: 'Meeting with design team at Disney',
+    start: '2024-08-09T07:30',
+    end: '2024-08-09T11:45',
+    description: 'some description',
+    location: 'some location',
+    eventColor: '#b32929',
+    organizer: {
+      id: '1',
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+      photo: 'https://example.com/photo.jpg',
+    },
+    participants: participants,
+  },
+  {
+    id: '3',
+    title: 'Flight to Paris',
+    start: '2024-08-10T07:30',
+    end: '2024-08-10T09:30',
+    description: 'some description',
+    location: 'some location',
+    eventColor: '#f5d0fe',
+    organizer: {
+      id: '1',
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+      photo: 'https://example.com/photo.jpg',
+    },
+    participants: participants,
+  },
+]
+
 export const WeeklyViewCalendar = () => {
-  const { selectedDate } = useEventCalendar()
+  const {
+    timeSlots,
+    weekDays,
+    calculatePosition,
+    getCurrentTime,
+    isNextWeek,
+    isLastWeek,
+    getGridRowEnd,
+    getGridRowStart,
+  } = useWeeklyView()
+
+  const {
+    isDragging,
+    setNodeRef: setDraggable,
+    listeners,
+    attributes,
+
+    node,
+  } = useDraggable({
+    id: 'draggable-item',
+  })
+  const { isOver, setNodeRef: setDroppable } = useDroppable({
+    id: 'droppable-item',
+  })
   const container = useRef<DivRef>(null)
   const containerNav = useRef<DivRef>(null)
   const containerOffset = useRef<DivRef>(null)
-
-  // Generate week days with the date
-  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-
-  // Calculate the start of the week based on the selected date
-  const startOfWeek = new Date(selectedDate)
-  startOfWeek.setDate(selectedDate.getDate() - selectedDate.getDay())
-
-  const today = new Date()
-
-  const weekDays = Array.from({ length: 7 }, (_, i) => {
-    const date = new Date(startOfWeek)
-    date.setDate(startOfWeek.getDate() + i)
-    return {
-      day: days[date.getDay()],
-      date: date.getDate(),
-      month: date.getMonth() + 1, // Month is 0-based, so add 1
-      year: date.getFullYear(),
-      isToday:
-        date.getDate() === today.getDate() &&
-        date.getMonth() === today.getMonth() &&
-        date.getFullYear() === today.getFullYear(),
-      isFirstDayOfWeek: date.getDay() === 0,
-    }
-  })
-
-  // time from 00:00 to 23:59 on the selected date
-  const timeSlots = Array.from({ length: 24 }, (_, i) => {
-    const start = new Date(selectedDate)
-    start.setHours(i)
-    start.setMinutes(0)
-    start.setSeconds(0)
-
-    const end = new Date(selectedDate)
-    end.setHours(i + 1)
-    end.setMinutes(0)
-    end.setSeconds(0)
-
-    return {
-      start,
-      end,
-    }
-  })
+  const [currentPosition, setCurrentPosition] = useState(0)
 
   useEffect(() => {
-    // Set the container scroll position based on the current time.
     const currentMinute = new Date().getHours() * 60
     if (!container.current || !containerNav.current || !containerOffset.current) return
     container.current.scrollTop =
@@ -63,11 +161,27 @@ export const WeeklyViewCalendar = () => {
         containerNav?.current.offsetHeight -
         containerOffset?.current.offsetHeight) *
         currentMinute) /
-      1440
+      2000
+  }, [])
+
+  useEffect(() => {
+    const updatePosition = () => {
+      const { hours, minutes } = getCurrentTime()
+      const position = calculatePosition(hours, minutes)
+      setCurrentPosition(position)
+    }
+
+    updatePosition()
+    const intervalId = setInterval(updatePosition, 1000)
+
+    return () => clearInterval(intervalId)
   }, [])
 
   return (
-    <div ref={container} className="isolate flex flex-auto flex-col overflow-auto bg-white">
+    <div
+      ref={container}
+      className="isolate flex flex-auto flex-col overflow-x-hidden overflow-y-auto bg-white"
+    >
       <div
         style={{ width: '165%' }}
         className="flex max-w-full flex-none flex-col sm:max-w-none md:max-w-full"
@@ -76,22 +190,25 @@ export const WeeklyViewCalendar = () => {
           ref={containerNav}
           className="sticky top-0 z-30 flex-none bg-white shadow ring-1 ring-black ring-opacity-5"
         >
+          {/* Mobile view */}
           <div className="grid grid-cols-7 text-sm leading-6 text-gray-500 sm:hidden">
-            {weekDays.map((day) => (
+            {weekDays.map((weekDay) => (
               <button
-                key={`${day.day}-${day.date}`}
+                key={`${weekDay.day}-${weekDay.date}`}
                 type="button"
                 className="flex flex-col items-center pb-3 pt-2"
               >
-                {day.day.slice(0, 1)}
+                {weekDay.day.slice(0, 1)}
                 <span
                   className={cn(
                     'mt-1 flex h-8 w-8 items-center justify-center font-semibold text-gray-900',
-                    day.isToday && 'bg-primary rounded text-primary-foreground',
-                    day.isFirstDayOfWeek && !day.isToday && 'bg-gray-50 rounded text-primary'
+                    weekDay.isToday && 'bg-primary rounded text-primary-foreground',
+                    weekDay.isFirstDayOfWeek &&
+                      !weekDay.isToday &&
+                      'bg-gray-50 rounded text-primary'
                   )}
                 >
-                  {day.date}
+                  {weekDay.date.getDate()}
                 </span>
               </button>
             ))}
@@ -99,18 +216,23 @@ export const WeeklyViewCalendar = () => {
 
           <div className="-mr-px hidden grid-cols-7 divide-x divide-gray-100 border-r border-gray-100 text-sm leading-6 text-gray-500 sm:grid">
             <div className="col-end-1 w-14" />
-            {weekDays.map((day) => (
-              <div key={`${day.day}-${day.date}`} className="flex items-center justify-center py-3">
+            {weekDays.map((weekDay) => (
+              <div
+                key={`${weekDay.day}-${weekDay.date}`}
+                className="flex items-center justify-center py-3"
+              >
                 <span>
-                  {day.day}{' '}
+                  {weekDay.day}{' '}
                   <span
                     className={cn(
                       'items-center justify-center font-semibold text-gray-900 px-2 py-1 ',
-                      day.isToday && 'bg-primary rounded text-primary-foreground',
-                      day.isFirstDayOfWeek && !day.isToday && 'bg-gray-50 px-2 rounded text-primary'
+                      weekDay.isToday && 'bg-primary rounded text-primary-foreground',
+                      weekDay.isFirstDayOfWeek &&
+                        !weekDay.isToday &&
+                        'bg-gray-50 px-2 rounded text-primary'
                     )}
                   >
-                    {day.date}
+                    {weekDay.date.getDate()}
                   </span>
                 </span>
               </div>
@@ -122,20 +244,35 @@ export const WeeklyViewCalendar = () => {
           <div className="grid flex-auto grid-cols-1 grid-rows-1">
             {/* Horizontal lines */}
             <div
-              className="col-start-1 col-end-2 row-start-1 grid divide-y divide-gray-100"
+              // ref={setDroppable}
+              className={cn(
+                'col-start-1 col-end-2 row-start-1 grid divide-y divide-gray-100 relative',
+                isOver && 'bg-blue-50'
+              )}
               style={{ gridTemplateRows: 'repeat(48, minmax(3.5rem, 1fr))' }}
             >
-              <div ref={containerOffset} className="row-end-1 h-7"></div>
+              <div ref={containerOffset} className="row-end-1 h-" />
               {timeSlots.map((timeSlot) => (
-                <Fragment key={`${timeSlot.start}-${timeSlot.end}`}>
+                <Fragment key={`${timeSlot.start}`}>
                   <div>
-                    <div className="sticky left-0 z-20 -ml-14 -mt-2.5 w-14 pr-2 text-right text-xs leading-5 text-gray-400">
+                    <div
+                      className={cn(
+                        'sticky left-0 z-20 -ml-14 -mt-1 w-14 pr-2 text-right text-xs leading-5 text-gray-400'
+                      )}
+                    >
                       {format(timeSlot.start, 'h a')}
                     </div>
                   </div>
                   <div />
                 </Fragment>
               ))}
+              {/* Current time indicator */}
+              {currentPosition && (
+                <div
+                  className="h-[3px] bg-black w-full absolute"
+                  style={{ top: `${currentPosition}px` }}
+                />
+              )}
             </div>
 
             {/* Vertical lines */}
@@ -147,16 +284,58 @@ export const WeeklyViewCalendar = () => {
               <div className="col-start-5 row-span-full" />
               <div className="col-start-6 row-span-full" />
               <div className="col-start-7 row-span-full" />
-              {/* <div className="col-start-8 row-span-full w-8" /> */}
             </div>
 
             {/* Events */}
             <ol
-              className="col-start-1 col-end-2 row-start-1 grid grid-cols-1 sm:grid-cols-7"
-              style={{ gridTemplateRows: '1.75rem repeat(288, minmax(0, 1fr)) auto' }}
+              className={cn('col-start-1 col-end-2 row-start-1 grid grid-cols-1 sm:grid-cols-7')}
+              style={{ gridTemplateRows: 'repeat(288, minmax(0, 1fr)) auto' }}
             >
-              <li
-                className="relative mt-px flex sm:col-start-3"
+              {events.map(
+                (event) =>
+                  !isLastWeek(new Date(event.start)) &&
+                  !isNextWeek(new Date(event.start)) && (
+                    <li
+                      ref={setDraggable}
+                      key={event.id}
+                      className="relative sm:col-start-[--colStart] sm:flex"
+                      style={
+                        {
+                          'gridColumnStart': new Date(event.start).getDay() + 1,
+                          'gridRow': `${getGridRowStart(event.start)} / span ${getGridRowEnd(event.start, event.end)}`,
+                          '--colStart': getGridRowStart(event.start) > 90 ? '8' : '3',
+                        } as any
+                      }
+                      {...attributes}
+                      {...listeners}
+                    >
+                      <a
+                        href="#"
+                        className="group absolute inset-1 flex flex-col rounded-lg bg-blue-50 p-2 text-xs leading-4 hover:bg-blue-100"
+                        style={{ backgroundColor: event.eventColor }}
+                      >
+                        <p
+                          className="order-1 font-semibold text-[--textColor] truncate"
+                          style={
+                            { '--textColor': getTextColorForBackground(event.eventColor) } as any
+                          }
+                        >
+                          {event.title}
+                        </p>
+                        <p
+                          className="text-[--textColor] group-hover:text-[--textColor]"
+                          style={
+                            { '--textColor': getTextColorForBackground(event.eventColor) } as any
+                          }
+                        >
+                          <time dateTime={event.start}>{format(event.start, 'h:mm a')}</time>
+                        </p>
+                      </a>
+                    </li>
+                  )
+              )}
+              {/* <li
+                className="relative mt-px flex sm:col-start-3 border border-red-300"
                 style={{ gridRow: '74 / span 12' }}
               >
                 <a
@@ -198,7 +377,7 @@ export const WeeklyViewCalendar = () => {
                     <time dateTime="2022-01-15T10:00">10:00 AM</time>
                   </p>
                 </a>
-              </li>
+              </li> */}
             </ol>
           </div>
         </div>
@@ -206,34 +385,3 @@ export const WeeklyViewCalendar = () => {
     </div>
   )
 }
-
-/*
-     {/* <div className="grid grid-cols-8 gap-2">
-        <div className="col-span-1 flex items-center justify-center sticky top-0">
-          <ComboboxDemo />
-        </div>
-        {weekDays.map((day, index) => (
-          <div key={index} className="col-span-1 flex items-center justify-center sticky top-0">
-            <h3
-              className={cn(
-                'text-center text-sm py-1 font-semibold uppercase',
-                day.isToday && 'bg-primary px-2 rounded text-primary-foreground',
-                day.isFirstDayOfWeek && !day.isToday && 'bg-gray-50 px-2 rounded text-primary'
-              )}
-            >
-              {day.day} {day.date}
-            </h3>
-          </div>
-        ))}
-      </div> 
-      {/* <div className="col-span-1 gap-2">
-        {timeSlots.map((timeSlot, index) => (
-          <div key={index} className="col-span-1 flex items-center justify-center py-2">
-            <h3 className="text-center text-sm font-semibold uppercase">
-              {format(timeSlot.start, 'HH:mm')}
-            </h3>
-          </div>
-        ))}
-      </div>
-
-*/
