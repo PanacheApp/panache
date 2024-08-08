@@ -130,7 +130,7 @@ export default function Footer() {
             {footerNavigation.social.map((item) => (
               <a key={item.name} href={item.href} className="text-zinc-500 hover:text-zinc-400">
                 <span className="sr-only">{item.name}</span>
-                <item.icon className="h-6 w-6" />
+                <item.icon />
               </a>
             ))}
           </div>

@@ -15,7 +15,7 @@ export const WobbleCard = ({
   return (
     <motion.section
       className={cn(
-        'mx-auto w-full bg-indigo-800  relative rounded-2xl overflow-hidden',
+        'mx-auto w-full bg-zinc-950 relative rounded-2xl overflow-hidden',
         containerClassName
       )}
     >

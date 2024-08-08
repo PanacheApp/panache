@@ -1,58 +1,108 @@
 import * as React from 'react'
 import { WobbleCard } from '#common/ui/components/wobble_card'
+import {
+  MailIcon,
+  HardDriveIcon,
+  UsersIcon,
+  CalendarIcon,
+  Share2Icon,
+  BriefcaseIcon,
+} from 'lucide-react'
+import emailsScreenshot from '../assets/screenshots/emails.png'
 
 interface FeaturesHeroProps {}
 
 const FeaturesHero: React.FunctionComponent<FeaturesHeroProps> = () => {
   return (
     <div className="py-24 px-4 sm:px-0">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-6xl mx-auto w-full">
-        <WobbleCard
-          containerClassName="col-span-1 lg:col-span-2 h-full bg-pink-800 min-h-[500px] lg:min-h-[300px]"
-          className=""
-        >
-          <div className="max-w-xs">
-            <h2 className="text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
-              Gippity AI powers the entire universe
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto w-full">
+        <WobbleCard containerClassName="col-span-1 md:col-span-2 lg:col-span-3 min-h-[300px]">
+          <div className="max-w-2xl">
+            <h2 className="text-left text-balance text-2xl md:text-3xl lg:text-4xl font-semibold tracking-[-0.015em] text-white">
+              Panache: Your All-in-One Productivity Suite
             </h2>
-            <p className="mt-4 text-left  text-base/6 text-neutral-200">
-              With over 100,000 mothly active bot users, Gippity AI is the most popular AI platform
-              for developers.
+            <p className="mt-4 text-left text-lg text-neutral-200">
+              Seamlessly integrate your work and personal life with Panache's comprehensive suite of
+              tools.
             </p>
           </div>
           <img
-            src="/linear.jpg"
-            width={500}
-            height={500}
-            alt="linear demo image"
-            className="absolute -right-4 lg:-right-[40%] grayscale filter -bottom-10 object-contain rounded-2xl"
+            src={emailsScreenshot}
+            alt="Panache Emails"
+            className="absolute right-4 bottom-4 w-1/3 object-contain rounded-lg"
           />
         </WobbleCard>
-        <WobbleCard containerClassName="col-span-1 min-h-[300px]">
-          <h2 className="max-w-80  text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
-            No shirt, no shoes, no weapons.
-          </h2>
-          <p className="mt-4 max-w-[26rem] text-left  text-base/6 text-neutral-200">
-            If someone yells “stop!”, goes limp, or taps out, the fight is over.
-          </p>
-        </WobbleCard>
-        <WobbleCard containerClassName="col-span-1 lg:col-span-3 bg-blue-900 min-h-[500px] lg:min-h-[600px] xl:min-h-[300px]">
-          <div className="max-w-sm">
-            <h2 className="max-w-sm md:max-w-lg  text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
-              Signup for blazing-fast cutting-edge state of the art Gippity AI wrapper today!
-            </h2>
-            <p className="mt-4 max-w-[26rem] text-left  text-base/6 text-neutral-200">
-              With over 100,000 mothly active bot users, Gippity AI is the most popular AI platform
-              for developers.
+
+        <WobbleCard containerClassName="col-span-1 min-h-[250px]">
+          <div className="flex flex-col h-full">
+            <div className="flex items-center space-x-4 mb-4">
+              <MailIcon className="w-8 h-8 text-white" />
+              <h3 className="text-xl font-semibold text-white">Panache Mails</h3>
+            </div>
+            <p className="text-neutral-200 flex-grow">
+              Streamlined email management with advanced filtering and organization tools.
             </p>
           </div>
-          <img
-            src="/linear.jpg"
-            width={500}
-            height={500}
-            alt="linear demo image"
-            className="absolute -right-10 md:-right-[40%] lg:-right-[20%] -bottom-10 object-contain rounded-2xl"
-          />
+        </WobbleCard>
+
+        <WobbleCard containerClassName="col-span-1 min-h-[250px]">
+          <div className="flex flex-col h-full">
+            <div className="flex items-center space-x-4 mb-4">
+              <HardDriveIcon className="w-8 h-8 text-white" />
+              <h3 className="text-xl font-semibold text-white">Panache Drive</h3>
+            </div>
+            <p className="text-neutral-200 flex-grow">
+              Secure cloud storage with seamless file sharing and collaboration features.
+            </p>
+          </div>
+        </WobbleCard>
+
+        <WobbleCard containerClassName="col-span-1 min-h-[250px]">
+          <div className="flex flex-col h-full">
+            <div className="flex items-center space-x-4 mb-4">
+              <UsersIcon className="w-8 h-8 text-white" />
+              <h3 className="text-xl font-semibold text-white">Panache Teams</h3>
+            </div>
+            <p className="text-neutral-200 flex-grow">
+              Real-time collaboration tools for efficient teamwork and project management.
+            </p>
+          </div>
+        </WobbleCard>
+
+        <WobbleCard containerClassName="col-span-1 min-h-[250px]">
+          <div className="flex flex-col h-full">
+            <div className="flex items-center space-x-4 mb-4">
+              <CalendarIcon className="w-8 h-8 text-white" />
+              <h3 className="text-xl font-semibold text-white">Panache Calendar</h3>
+            </div>
+            <p className="text-neutral-200 flex-grow">
+              Intelligent scheduling and event management to keep you organized.
+            </p>
+          </div>
+        </WobbleCard>
+
+        <WobbleCard containerClassName="col-span-1 min-h-[250px]">
+          <div className="flex flex-col h-full">
+            <div className="flex items-center space-x-4 mb-4">
+              <Share2Icon className="w-8 h-8 text-white" />
+              <h3 className="text-xl font-semibold text-white">Panache Social</h3>
+            </div>
+            <p className="text-neutral-200 flex-grow">
+              Connect with colleagues and share ideas on our integrated social platform.
+            </p>
+          </div>
+        </WobbleCard>
+
+        <WobbleCard containerClassName="col-span-1 min-h-[250px]">
+          <div className="flex flex-col h-full">
+            <div className="flex items-center space-x-4 mb-4">
+              <BriefcaseIcon className="w-8 h-8 text-white" />
+              <h3 className="text-xl font-semibold text-white">Panache Business</h3>
+            </div>
+            <p className="text-neutral-200 flex-grow">
+              Comprehensive tools tailored for your business needs and growth.
+            </p>
+          </div>
         </WobbleCard>
       </div>
     </div>

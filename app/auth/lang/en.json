@@ -17,7 +17,6 @@
   "backup_email_address": "Backup Email Address",
   "backup_email_description": "A <em>backup email address</em> is used to <strong>recover your account</strong> if you lose access to it.",
   "optional": "optional",
-  "backup_email_placeholder": "john.doe@gmail.com",
   "password": "Password",
   "sign_up": "Sign Up",
   "sign_in": "Sign In",
@@ -25,5 +24,6 @@
   "dont_have_account": "Don't have an account?",
   "forgot_password": "Forgot your password?",
   "send_reset_link": "Send Reset Link",
-  "invalid_credentials": "Invalid credentials."
+  "invalid_credentials": "Invalid credentials.",
+  "fill_development_values": "Fill development values"
 }

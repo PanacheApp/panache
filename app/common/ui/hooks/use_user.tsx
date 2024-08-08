@@ -1,4 +1,4 @@
-import User from '#models/user'
+import User from '#common/database/models/user'
 import usePageProps from './use_page_props'
 
 export default function useUser() {

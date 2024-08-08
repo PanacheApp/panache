@@ -1,7 +1,5 @@
-import * as React from 'react'
-import EmailsLayout from '#emails/ui/components/emails_layout'
-import { EmailsList } from '../components/emails_list'
-import SearchEmails from '../components/search_emails'
+import { atom, useAtom } from 'jotai'
+import { Mail } from '../pages'
 
 export const mails = [
   {
@@ -175,17 +173,15 @@ export const mails = [
     labels: ['personal'],
   },
 ]
-export type Mail = (typeof mails)[number]
 
-interface EmailsProps {}
-
-const Emails: React.FunctionComponent<EmailsProps> = () => {
-  return (
-    <EmailsLayout topChildren={<p className="font-semibold text-lg">Inbox</p>}>
-      <SearchEmails />
-      <EmailsList items={mails} />
-    </EmailsLayout>
-  )
+type Config = {
+  selected: Mail['id'] | null
 }
 
-export default Emails
+const configAtom = atom<Config>({
+  selected: mails[0].id,
+})
+
+export function useEmail() {
+  return useAtom(configAtom)
+}
