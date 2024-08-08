@@ -4,10 +4,10 @@ import { DataTable } from '#drive/ui/components/data_table'
 import { TopBarContent } from '#drive/ui/components/layouts/top_bar_content'
 import { SidebarContent } from '#drive/ui/components/layouts/sidebar_content'
 import { columns } from '#drive/ui/components/columns'
-import File from '#drive/database/models/files'
+import { File } from '#drive/types/file'
 
 interface Props {
-  files: File
+  files: File[]
 }
 
 

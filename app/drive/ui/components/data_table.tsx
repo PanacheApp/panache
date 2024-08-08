@@ -9,7 +9,6 @@ import {
   } from '#common/ui/components/table'
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 
-
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
@@ -21,7 +20,11 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
       data,
       columns,
       getCoreRowModel: getCoreRowModel(),
-      enableColumnResizing: true
+      defaultColumn: {
+        size: 200, //starting column size
+        minSize: 50, //enforced during column resizing
+        maxSize: 500, //enforced during column resizing
+      },
     })
   
     return (

@@ -4,12 +4,12 @@ import { File } from '#drive/types/file';
 import { ArrowDownIcon, FilePlusIcon, FolderIcon, FolderPlusIcon, UploadIcon } from 'lucide-react';
 import { Button } from '#common/ui/components/button';
 import { Checkbox } from '#common/ui/components/checkbox';
+import { formatBytes } from '#common/ui/lib/format_bytes';
+import { Badge } from '#common/ui/components/badge';
 
 export const columns: ColumnDef<File>[] = [
   {
     accessorKey: 'id',
-    minSize: 40,
-    enableResizing: true,
     header: ({ table }) => (
       <Checkbox
         checked={
@@ -54,14 +54,29 @@ export const columns: ColumnDef<File>[] = [
     }
   },
   {
-    size: 100,
-    enableResizing: true,
-    accessorKey: 'fileType',
+    accessorKey: 'mime',
     header: 'Type',
+    cell: ({ getValue }) => (
+      <Badge variant='secondary' className='uppercase text-gray-500' >{getValue<string>()} </Badge>
+    )
+    
   },
   {
-    size: 100,
-    accessorKey: 'fileSize',
+    accessorKey: 'size',
     header: 'Size',
+    cell: ({ getValue }) => (
+      <span>{formatBytes(getValue<number>())}</span>
+    )
+  },
+  {
+    accessorKey: 'createdAt',
+    header: 'Uploaded',
+    cell: ({ getValue }) => (
+      <span>{new Intl.DateTimeFormat('en-US', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      }).format(new Date(getValue<string>())) }</span>
+    )
   },
 ]
