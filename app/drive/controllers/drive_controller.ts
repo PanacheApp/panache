@@ -3,7 +3,7 @@ import File from '#drive/database/models/files'
 
 export default class DriveController {
   async index({ auth, inertia }: HttpContext) {
-    let files = await File.findManyBy('createdBy', auth.user?.id)
+    let files = await File.findManyBy({ createdBy: auth.user?.id, deletedAt: null })
     return inertia.render('drive/index', { files })
   }
 }

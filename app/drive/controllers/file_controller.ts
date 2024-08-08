@@ -39,10 +39,9 @@ export default class FileController {
       const name = request.input('name')
       const id = request.param('id')
 
-
       const file = await File.find(id)
       if(file) {
-        await file.fill({ name }).save()
+        await file.merge({ name }).save()
       }
 
       return inertia.location('/drive')
