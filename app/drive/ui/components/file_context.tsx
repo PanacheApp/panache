@@ -6,9 +6,16 @@ import {
   } from "#common/ui/components/context_menu"
 import { PropsWithChildren } from "react"
   
-export function FileContextMenu({ children, id, name }: PropsWithChildren<File>) {
+export function FileContextMenu({ children, id, name }: PropsWithChildren<Pick<File, 'id' | 'name'>>) {
   const { value: open, toggle } = useToggle();   
   
+  const onDelete = () => {
+      router.delete('/drive/file/' + id, {
+        onSuccess() {
+          toast.success('File deleted successfully.')
+        }
+      })
+  }
 
   return (
       <>
@@ -17,8 +24,11 @@ export function FileContextMenu({ children, id, name }: PropsWithChildren<File>)
               {children}
           </ContextMenuTrigger>
           <ContextMenuContent className="w-64">
-            <ContextMenuItem onClick={() => toggle()} inset>
+            <ContextMenuItem onClick={() => toggle()} >
                 Rename
+            </ContextMenuItem>
+            <ContextMenuItem onClick={() => onDelete()} >
+                Delete
             </ContextMenuItem>
           </ContextMenuContent>
         </ContextMenu>
@@ -39,7 +49,8 @@ import {
 import { Input } from "#common/ui/components/input"
 import { useToggle } from "#common/ui/hooks/use_toggle"
 import { File } from "#drive/types/file";
-import { useForm } from "@inertiajs/react";
+import { router, useForm } from "@inertiajs/react";
+import { toast } from "sonner";
 
 export function RenameFileModal({ open, toggle, name, id }: { open: boolean; toggle: () => void; name: string; id: string }) {
  

@@ -44,8 +44,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                
-                <FileContextMenu key={row.id} {...row.original}>
+                <FileContextMenu key={row.id} {...row.original as any}>
                   <TableRow data-state={row.getIsSelected() && 'selected'}>
                       {row.getVisibleCells().map((cell) => (
                         <TableCell key={cell.id}>

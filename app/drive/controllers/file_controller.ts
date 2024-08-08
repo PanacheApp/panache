@@ -45,4 +45,12 @@ export default class FileController {
 
       return inertia.location('/drive')
    }
+
+   async trash({ request, inertia }: HttpContext) {
+    const id = request.param('id')
+
+    await File.query().where('id', id).update({ deletedAt: new Date() })
+
+    return inertia.location('/drive')
+ }
 }
