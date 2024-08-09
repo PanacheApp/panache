@@ -1,7 +1,9 @@
 import type { HttpContext } from '@adonisjs/core/http'
+import File from '#drive/database/models/files'
 
 export default class DriveController {
-  async index({ inertia }: HttpContext) {
-    return inertia.render('drive/index')
+  async index({ auth, inertia }: HttpContext) {
+    let files = await File.findManyBy({ createdBy: auth.user?.id, deletedAt: null })
+    return inertia.render('drive/index', { files })
   }
 }

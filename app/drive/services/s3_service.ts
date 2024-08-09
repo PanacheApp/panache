@@ -1,5 +1,7 @@
-import { S3Client, CreateBucketCommand, HeadBucketCommand } from '@aws-sdk/client-s3'
+import { S3Client, CreateBucketCommand, HeadBucketCommand, PutObjectCommand } from '@aws-sdk/client-s3'
 import env from '#start/env'
+import { MultipartFile } from '@adonisjs/core/bodyparser'
+import fs from 'fs'
 
 export default class S3Service {
   #client: S3Client
@@ -29,5 +31,27 @@ export default class S3Service {
         throw error
       }
     }
+  }
+
+  async uploadFile(bucketName: string, file: MultipartFile, key: string): Promise<void> {
+    const fileStream = fs.createReadStream(file.tmpPath!)
+    
+    const uploadParams = {
+      Bucket: bucketName,
+      Key: key,
+      Body: fileStream,
+      ContentType: file.headers['content-type'],
+    }
+
+    try {
+      await this.#client.send(new PutObjectCommand(uploadParams))
+    } catch (error) {
+      throw new Error(`Error uploading file: ${error.message}`)
+    }
+  }
+
+  // TODO: implement folder uploadWhat
+   async uploadFolder(): Promise<void> {
+ 
   }
 }
