@@ -6,6 +6,7 @@ import { Button } from '#common/ui/components/button';
 import { Checkbox } from '#common/ui/components/checkbox';
 import { formatBytes } from '#common/ui/lib/format_bytes';
 import { Badge } from '#common/ui/components/badge';
+import { MimeFileIcon } from './mime_file_icon';
 
 export const columns: ColumnDef<File>[] = [
   {
@@ -44,8 +45,8 @@ export const columns: ColumnDef<File>[] = [
     },
     cell: (data) => {
       return <div className='flex items-center gap-x-4'>
-            <span className='p-2.5 rounded-md bg-gray-100'>
-              <FolderIcon className='size-5 stroke-gray-500 fill-gray-500' />
+            <span className='p-2.5 rounded-md bg-gray-100 text-gray-500'>
+              <MimeFileIcon mimeType={data.row.original.mime} />
             </span>
             <span>
               {data.getValue<string>()}
